@@ -1,8 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/navbar/Navbar";
+import { Footer } from "@/components/footer/Footer";
+import { Suspense } from "react";
+import ScrollToTopButton from "@/components/common/button/ScrollToTopButton";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const notojp = Noto_Sans_JP({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--font-notojp",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +31,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body
+        suppressHydrationWarning={true}
+        className={`${inter.className} ${notojp.variable}`}
+      >
+        <div className="flex flex-col min-h-screen m-0 relative">
+          <Navbar />
+          <Suspense>
+            <main className="">{children}</main>
+          </Suspense>
+          <Footer className="h-[128px] w-full bg-dark-500" />
+          <ScrollToTopButton />
+        </div>
+      </body>
     </html>
   );
 }
